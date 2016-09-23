@@ -52,14 +52,14 @@ class WebhooksRequestHandler(BaseHTTPRequestHandler):
         event = self.headers.get("X-GitHub-Event")
         if event == "ping":
             print("Receive ping request.")
-            #data = json.loads(self.get_body(), sort_keys=True, indent=4)
-            #print(data)
+            data = json.loads(self.get_body().decode('utf-8'))
+            print(data)
             self.send_response(200, "OK")
             self.end_headers()
         elif event == "push":
             # run git pull command
             print("receive pull request.")
-            os.chdir(workdir)
+            os.chdir(work_dir)
             try:
                 subprocess.run("git pull", shell=True, check=True)
             except subprocess.CalledProcessError as e:
